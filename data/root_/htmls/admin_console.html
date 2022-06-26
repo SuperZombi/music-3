@@ -1,0 +1,44 @@
+(function load_lang(){
+if (typeof LANG !== 'undefined'){
+body = `
+<div id="wraper" onclick="focusConsole(event)">
+<div id="main_page">
+	<div id="admin_console" style="display: none">
+		<h3>Fast Commands:</h3>
+
+		<span class="radio">
+			<input label="Get All Tracks" type="radio" name="get_all_tracks" checked onclick="doFastCommand(this)">
+		</span>
+
+		<span class="radio">
+			<input label="Get All Users" type="radio" name="get_all_users" checked onclick="doFastCommand(this)">
+		</span>
+
+		<span class="radio">
+			<input label="Get All Admins" type="radio" name="get_all_admins" checked onclick="doFastCommand(this)">
+		</span>
+
+		<br>
+		<div class="radio">
+			<input label="Search" type="radio" name="show_search" onclick="doFastCommand(this)">
+		</div>
+
+		<div id="search_menu">
+			<div class="radio">
+				<input label="Track" type="radio" name="search_type" value="track">
+				<input label="User" type="radio" name="search_type" value="user">
+				<input type="text" name="search_value">
+				<input label="Search" type="radio" name="search" checked onclick="doFastCommand(this)">
+			</div>
+		</div>
+
+		<div id="console"><a class="admin">admin></a></div>
+	</div>
+</div>
+</div>
+`
+}
+else{
+	setTimeout(function(){load_lang()}, 500)
+}
+})()

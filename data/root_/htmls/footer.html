@@ -1,0 +1,13 @@
+(function load_lang(){
+if (typeof LANG !== 'undefined'){
+footer = `
+<div id="footer">
+	<a href="/support">${LANG.contact}</a>
+	<div>©Copyright 2022 Zombi Music</br>All rights reserved.</div>
+</div>
+`
+}
+else{
+	setTimeout(function(){load_lang()}, 500)
+}
+})()

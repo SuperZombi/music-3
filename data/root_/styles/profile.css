@@ -1,0 +1,512 @@
+#card_previewer{
+	display: none;
+	height: 80px;
+	justify-content: center;
+	align-items: center;
+	transform: translateY(100%);
+	width: 100%;
+	left: 0;
+	background-color: var(--account_menu);
+	position: fixed;
+	z-index: 4;
+	bottom: 0;
+	transition: 0.4s;
+}
+#card_previewer > span > * {
+	height: 50px;
+	display: inline-block;
+	margin: 15px;
+	filter: drop-shadow(0 0 1px var(--contrast-mini));
+	cursor: pointer;
+	transition: 0.3s;
+	user-select: none;
+}
+#card_previewer > span > *:hover {
+	filter: drop-shadow(0 0 3px var(--contrast-mini));
+}
+#card_previewer > span > .close{
+	height: 40px;
+	fill: red;
+}
+#card_previewer > span > .close:hover{
+	filter: drop-shadow(0 0 10px red);
+}
+
+#card_previewer_name{
+	font-family: 'Balsamiq Sans';
+	max-height: 100px;
+	font-size: 30pt;
+	color: var(--contrast-color);
+	display: none;
+	text-align: center;
+	transform: translateY(350%);
+	width: 100%;
+	left: 0;
+	background-color: var(--account_menu);
+	position: fixed;
+	z-index: 3;
+	bottom: 80px;
+	transition: 0.5s;
+	filter: drop-shadow(0 -1px 5px var(--contrast-color));
+}
+#card_previewer_name div{
+	margin: 0 5px;
+}
+
+#card_previewer_user_txt{
+	font-size: 16pt;
+}
+
+#notifications > * > .Message-body > p{
+	width: 100%;
+}
+
+
+.noHover{
+	filter: grayscale(1);
+}
+.noHover:hover{
+	border-radius: 30px;
+	transform: translateY(0);
+}
+.noHover:hover img{
+	border-radius: 50px;
+}
+
+#favorites_title{
+	font-family: 'Balsamiq Sans';
+	font-size: 30pt;
+	text-align: center;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+#favorites_title hr{
+	width: 85%;
+}
+
+
+
+#artist_image{
+	transition: 0.3s;
+}
+.artist_image_wrapper:hover .popup_image_camera{
+	top: 53%;
+	opacity: 1;
+}
+.artist_image_wrapper:hover #artist_image{
+	filter: blur(6px);
+}
+.popup_image_camera{
+	cursor: pointer;
+	position: absolute;
+	top: 85%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 35%;
+	transition: 0.25s ease-out;
+	opacity: 0;
+}
+#extra_space{
+	transition: 0.75s ease;
+}
+
+#user-name{
+	font-family: 'Balsamiq Sans';
+	font-size: 30pt;
+	margin: unset;
+}
+#user-name a{
+	cursor: alias;
+	max-width: 100vw;
+	overflow-x: clip;
+	display: inline-flex;
+}
+
+#console-icon{
+	position: absolute;
+	top: 4px;
+	right: 5px;
+	cursor: pointer;
+	transition: 0.2s filter;
+	height: 70px;
+	align-items: center;
+}
+#console-icon > img{
+	width: 50px;
+	height: 50px;
+}
+#console-icon:hover{
+	filter: drop-shadow(0 -1px 4px var(--contrast-color));
+}
+
+.logout{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.logout svg{
+	margin-left: 8px;
+	height: 28px;
+	cursor: pointer;
+	transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.logout svg:hover{
+	fill: red;
+}
+
+.content h2:first-child{
+	margin-top: 5px;
+}
+.radio {
+	background: unset;
+}
+.settings_element{
+	font-size: 16px;
+	background: var(--settings-back);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.settings_element:first-child{
+	margin-top: unset;
+}
+.settings_element:last-child{
+	margin-bottom: unset;
+}
+.settings_element.ignore-divide-background{
+	background: unset;
+	margin-top: unset;
+	margin-bottom: unset;
+}
+.settings_element.ignore-divide{
+	background: unset;
+	margin-top: unset;
+	margin-bottom: unset;
+	border-radius: unset;
+	padding-top: unset;
+	padding-bottom: unset;	
+}
+
+/* INPUTS */
+.group *{
+	box-sizing: border-box;
+}
+.group {
+	position: relative;
+	margin: 15px 0;
+	font-family: sans-serif;
+	min-width: 50%;
+}
+.center-wrap{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+.group input, select {
+	background: none;
+	color: var(--contrast-color);
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	display: block;
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid var(--contrast-color);
+	outline: none;
+}
+.group input:-webkit-autofill {
+	-webkit-text-fill-color: var(--contrast-color);
+	transition: background-color 5000s ease-in-out 0s;
+	-webkit-box-shadow: 0 0 0 30px var(--details_content) inset !important;
+}
+.group select option {
+	background: var(--notifications-back);
+	color: var(--contrast-color);
+}
+.group input:focus {
+	outline: none;
+}
+.group input:focus ~ label, .group input:not(:placeholder-shown) ~ label,
+.group select:not([data-chosen='']) ~ label {
+	top: -14px;
+	font-size: 12px;
+	color: #2196f3;
+}
+.group input:focus ~ .bar:before {
+	transform: scale(1);
+}
+.group input[type=password] {
+	letter-spacing: 0.3em;
+}
+.group input[required] ~ label:before {
+	content: "* ";
+	color: red;
+}
+.group label {
+	color: var(--contrast-mini);
+	font-size: 16px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 5px;
+	top: 10px;
+	transition: 300ms ease all;
+}
+.toggle{
+	color: var(--contrast-mini);
+	float: right;
+	margin-top: -25px;
+	cursor: pointer;
+}
+.bar {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+.bar:before {
+	content: "";
+	height: 2px;
+	width: 100%;
+	bottom: 0;
+	position: absolute;
+	background: #2196f3;
+	transition: 300ms ease all;
+	left: 0%;
+	transform: scale(0);
+	transform-origin: center bottom;
+}
+
+
+/* Button */
+.button {
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 15px;
+	border: 5em;
+	cursor: pointer;
+	outline: none;
+	font-size: 18px;
+	font-family: sans-serif;
+	transform: translate(0);
+	background-image: linear-gradient(45deg, #4568dc, #b06ab3);
+	padding: 0.7em 2em;
+	border-radius: 65px;
+	user-select: none;
+	box-shadow: 1px 1px 10px var(--shadow_lite);
+	transition: box-shadow 0.25s, font-size 0.3s ease-out;
+	color: var(--contrast-color);
+}
+.button:after {
+	content: "";
+	border-radius: 65px;
+	position: absolute;
+	margin: 4px;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: -1;
+	transition: 0.1s;
+	background: var(--body-color);
+}
+.button:hover {
+	background-image: linear-gradient(-45deg, #4568dc, #b06ab3);
+	box-shadow: 0 12px 24px rgba(128, 128, 128, 0.1) !important;
+}
+.button:active:after {
+	margin: 0px;
+}
+
+
+.button-15 {
+	background-image: linear-gradient(#42A1EC, #0070C9);
+	border: 1px solid #0077CC;
+	border-radius: 6px;
+	box-sizing: border-box;
+	color: #FFFFFF;
+	cursor: pointer;
+	direction: ltr;
+	display: block;
+	font-family: Arial,sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	letter-spacing: -.022em;
+	line-height: 1.47059;
+	min-width: 30px;
+	overflow: visible;
+	padding: 4px 15px;
+	text-align: center;
+	vertical-align: baseline;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	white-space: nowrap;
+	margin: 5px auto;
+}
+.button-15:hover {
+	background-image: linear-gradient(#51A9EE, #147BCD);
+	border-color: #1482D0;
+	text-decoration: none;
+}
+.button-15:active {
+	background-image: linear-gradient(#3D94D9, #0067B9);
+	border-color: #006DBC;
+	outline: none;
+}
+.button-15:focus {
+	box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+	outline: none;
+}
+.red.button-15{
+	background-image: linear-gradient(#FF0000, #C90000);
+	border: 1px solid #CC0000;
+}
+.red.button-15:hover {
+	background-image: linear-gradient(#FF2B2B, #CD1414);
+	border-color: #D01414;
+}
+.red.button-15:active {
+	background-image: linear-gradient(#d93d3d, #B90000);
+	border-color: #BC0000;
+}
+.red.button-15:focus {
+	box-shadow: rgba(253, 131, 131, 0.5) 0 0 0 3px;
+}
+
+hr{
+	margin-bottom: revert;
+}
+/* Details */
+summary {
+	display: block;
+	position: relative;
+	cursor: pointer;
+	text-align: center;
+	padding: 0.8rem;
+	font-size: 14pt;
+	color: var(--contrast-color);
+}
+#settings > summary {
+	border: 2px solid transparent;
+	outline: none;
+	background: var(--header-color);
+	transition: border-color 0.3s;
+	font-size: 16pt;
+}
+#settings > summary:focus {
+	border-color: var(--details_border);
+}
+details#settings{
+	max-width: 50%;
+	box-sizing: border-box;
+	margin: 6px auto;
+	background: var(--details_content);
+	font-family: "Open Sans", sans-serif;
+}
+details summary::-webkit-details-marker {
+	display: none;
+}
+summary:before {
+	content: "";
+	border-width: 0.4rem;
+	border-style: solid;
+	border-color: transparent transparent transparent var(--contrast-color);
+	position: absolute;
+	top: 1.3rem;
+	left: 1rem;
+	transform: rotate(0);
+	transform-origin: 0.2rem 50%;
+	transition: 0.25s transform ease;
+}
+#settings > details[open] {
+	margin-bottom: 25px;
+}
+details[open] > summary:before {
+	transform: rotate(90deg);
+}
+.content {
+	padding: 10px;
+	text-align: center;
+}
+#settings > .content {
+	border: 2px solid var(--details_border);
+	border-top: none;
+}
+
+@media all and (max-width: 500px) {
+	details#settings {
+		max-width: 98%;
+	}
+	.group{
+		min-width: 65%;
+	}
+	#favorites_title{
+		font-size: 24pt;
+		margin-top: 10px;
+		margin-bottom: -10px;
+	}
+	.center-wrap {
+		justify-content: space-between;
+	}
+}
+
+
+/* Switcher */
+.switcher{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5%;
+}
+.switcher .btn {
+	border: 3px solid #1a1a1a;
+	padding: 4px 8px;
+	text-align: center;
+	transition: background 500ms ease, color 500ms ease;
+	background: #1a1a1a;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+.switcher input[type=radio].toggle {
+	display: none;
+}
+.switcher input[type=radio].toggle + label {
+	cursor: pointer;
+	height: 20px;
+	width: 20px;
+	user-select: none;
+}
+.switcher input[type=radio].toggle.toggle-left + label:hover {
+	color: red;
+}
+.switcher input[type=radio].toggle.toggle-right + label:hover {
+	color: green;
+}
+.switcher input[type=radio].toggle:checked + label:hover {
+	background: none;
+	color: #1a1a1a;
+}
+.switcher input[type=radio].toggle.toggle-right + label {
+	border-radius: 0 25px 25px 0;
+}
+.switcher input[type=radio].toggle.toggle-left + label {
+	border-right: 0;
+	border-radius: 25px 0 0 25px;
+}
+.switcher input[type=radio].toggle:checked + label {
+	color: #fff;
+	background: #1a1a1a;
+}
+.switcher input[type=radio].toggle.toggle-left:checked + label {
+	background: red;
+}
+.switcher input[type=radio].toggle.toggle-right:checked + label {
+	background: green;
+}

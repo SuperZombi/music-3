@@ -1,0 +1,150 @@
+:root{
+	--header-color: #222222;
+	--body-color: #13181E;
+	--page_head-color: #13181E;
+	--contrast-color: white;
+	--loading-wave: white;
+	--contrast-mini: lightgrey;
+	--share-element: #080808;
+	--share-element-inside: #1A1A1B;
+	--notifications-back: rgba(0, 0, 0, 0.7);
+
+	--login_back: #454857;
+	--shadow_lite: rgba(255, 255, 255, 0.5);
+
+	--account_menu: #09161C;
+	--details_content: #444;
+	--details_border: rgb(125,125,125, 0.5);
+	--button-gradient: linear-gradient(180deg, #696969, #505050);
+	--button-gradient-green: linear-gradient(180deg, #73c46e, #399e7b);
+
+	--tabs-color: white;
+	--tabs-hover: rgba(255, 255, 255, .3);
+
+	--settings-back: rgba(255, 255, 255, 0.1);
+}
+::-webkit-scrollbar
+{
+	background-color: #2020 !important;
+}
+::-webkit-scrollbar-track
+{
+	background-color: #2020 !important;
+}
+::-webkit-scrollbar-thumb
+{
+	background-color: #555 !important;
+}
+.Ocean {
+  background: transparent !important;
+}
+#header a:hover{
+	color: yellow !important;
+}
+#header a:hover img{
+	filter: drop-shadow(0 0 1px yellow) !important;
+}
+
+#artist:hover{
+	color: yellow !important;
+}
+
+#links_area{
+	background: #1A242F !important;
+}
+.link{
+	box-shadow: inset 0 -2px 9px 0 rgb(255, 255, 255, 0.1) !important;
+	border-bottom: 1px solid rgb(255, 255, 255, 0.1) !important;
+}
+.link a{
+	color: lightgrey !important;
+	border: 2px solid lightgrey !important;
+}
+.link a:hover{
+	border-color: #101010 !important;
+	background-color: #101010 !important;
+}
+.link:hover{
+	background: #111B25 !important;
+}
+.other_link svg{
+	fill: var(--contrast-color);
+}
+#footer a:hover{
+	color: yellow !important;
+}
+#share_menu{
+	background-color: var(--page_head-color);
+}
+div.ripple {
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+#main_page table{
+	background: #252F48 !important;
+}
+#main_page table th {
+	border-bottom: 1px solid #37B5A5 !important;
+}
+#main_page table tr:nth-child(2n) {
+	background: #303B56 !important;
+}
+#main_page table td {
+	color: lightgrey !important;
+	border-bottom: 1px solid #37B5A5 !important;
+	border-right: 1px solid #37B5A5 !important;
+}
+.config_link:hover{
+	color: #7ACBFF !important;
+	border-bottom: 2px solid #7ACBFF !important;
+}
+.config_link i{
+	color: #009CFF !important;
+}
+.config_link:hover i{
+	color: #7ACBFF !important;
+}
+
+
+#about table td a {
+	color: #57D6FF;
+}
+#about table td a:hover {
+	color: yellow;
+}
+
+
+
+/* ---------------- */
+.about_box{
+	background: #1E2C3C !important;
+}
+.about_box:hover{
+	background: #345171 !important;
+}
+
+/* ---------------- */
+#moon{
+	box-shadow: -25px 25px 0 0px #eef;
+	transform: translate(25px, -25px);
+	filter: drop-shadow(0 0 4px white);
+}
+#moonspot1, #moonspot2{
+	opacity: 1;
+	transition:all 2s;
+}
+
+/*  */
+
+.link_button{
+	color: lightgrey !important;
+	border: 2px solid lightgrey !important;
+}
+.link_button:hover{
+	border-color: #555555 !important;
+	background-color: #101010 !important;
+}
+
+.logout svg{
+	fill: white;
+}
