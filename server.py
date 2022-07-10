@@ -110,8 +110,8 @@ def stat_check_html(file, sub=False):
 			return False
 
 		if is_track_path(path):
-			track = tracks.get(path=list(Path(path).parts))
-			tracks.get_by_id(track)['statistics']["views"] += 1
+			track = tracks.find(path=list(Path(path).parts))
+			tracks.get(track)['statistics']["views"] += 1
 			tracks.save()
 	if sub:
 		if os.path.splitext(file)[-1] == ".html":
@@ -160,15 +160,15 @@ def get_tracks():
 			sort_method = request.json['sort_method']
 
 	if 'user' in request.json.keys():
-		user = users.get_by_id(request.json['user'])
+		user = users.get(request.json['user'])
 		if user:
 			temp = {}
 			temp['path'] = request.json['user'].lower().replace(" ", "-")
 			temp['tracks'] = []
 
-			ids = tracks.get(artist=request.json['user'], all=True)
+			ids = tracks.find_all(artist=request.json['user'])
 			for id in ids:
-				track = tracks.get_by_id(id)
+				track = tracks.get(id)
 				temp['tracks'].append(track)
 
 			temp['tracks'] = sort_tracks(temp['tracks'], by=sort_method)
@@ -222,7 +222,7 @@ def edit_user(user, data):
 def name_available():
 	if "/" in request.json['name'] or "\\" in request.json['name']:
 		return jsonify({'available': False, 'reason': Errors.forbidden_character.name})
-	if users.get_by_id(request.json['name']):
+	if users.get(request.json['name']):
 		return jsonify({'available': False, 'reason': Errors.name_already_taken.name})
 	user_folder = os.path.join("data", request.json['name'].lower().replace(" ", "-"))
 	if os.path.exists(user_folder):
@@ -239,7 +239,7 @@ def register():
 	
 	if request.json['name'].lower() == "admin":
 		return jsonify({'successfully': False, 'reason': Errors.name_already_taken.name})
-	if users.get_by_id(request.json['name']):
+	if users.get(request.json['name']):
 		return jsonify({'successfully': False, 'reason': Errors.name_already_taken.name})
 	try:
 		user_folder = os.path.join("data", request.json['name'].lower().replace(" ", "-"))
@@ -262,7 +262,7 @@ def register():
 		return jsonify({'successfully': False, 'reason': Errors.invalid_parameters.name})
 
 def fast_login(user, password):
-	data = users.get_by_id(user)
+	data = users.get(user)
 	if data:
 		if data['password'] == password:
 			return True
@@ -281,7 +281,7 @@ def reset():
 	ip = request.headers.get('X-Forwarded-For', request.remote_addr)
 	x = BrootForceProtection(request.json['user'], request.json['old_password'], ip, fast_login)()
 	if x['successfully']:
-		user = users.get_by_id(request.json['user'])
+		user = users.get(request.json['user'])
 		user["password"] = request.json['new_password']
 		users.save()
 		return jsonify({'successfully': True})
@@ -403,7 +403,7 @@ def upload_file():
 				if "/" in request.form['track_name'] or "\\" in request.form['track_name']:
 					return jsonify({'successfully': False, 'reason': Errors.track_forbidden_character.name})
 
-				if tracks.get(artist=request.form['artist'], track=request.form['track_name']):
+				if tracks.find(artist=request.form['artist'], track=request.form['track_name']):
 					return jsonify({'successfully': False, 'reason': Errors.track_already_exists.name})
 
 				if not os.path.exists(track_folder):
@@ -498,7 +498,7 @@ def delete_track_func(user, track):
 	if os.path.exists(track_folder):
 		shutil.rmtree(track_folder)
 
-		track_id = tracks.get(artist=user, track=track)
+		track_id = tracks.find(artist=user, track=track)
 		tracks.delete(track_id)
 		return True
 	else:
@@ -529,12 +529,12 @@ def get_track_info_json(path, other_track_info):
 @app.route('/api/get_track_info', methods=['POST'])
 def get_track_info():
 	try:
-		track = tracks.get(artist=request.json['artist'], track=request.json['track'])
+		track = tracks.find(artist=request.json['artist'], track=request.json['track'])
 		if track:
 			try:
 				user_folder = os.path.join("data", request.json['artist'].lower().replace(" ", "-"))
 				track_folder = os.path.join(user_folder, request.json['track'].lower().replace(" ", "-"))
-				track_inf = tracks.get_by_id(track)
+				track_inf = tracks.get(track)
 				config = get_track_info_json(os.path.join(track_folder, 'config.json'), track_inf)
 				return jsonify({'successfully': True, 'config': config})
 			except:
@@ -555,8 +555,8 @@ def edit_track_api():
 
 			if os.path.exists(track_folder):
 				try:
-					track = tracks.get(artist=request.form['artist'], track=request.form['track_name'])
-					track_inf = tracks.get_by_id(track)
+					track = tracks.find(artist=request.form['artist'], track=request.form['track_name'])
+					track_inf = tracks.get(track)
 					old_config = get_track_info_json(os.path.join(track_folder, 'config.json'), track_inf)
 
 					config = edit_config(request.form.to_dict(), old_config)
@@ -678,7 +678,7 @@ def get_user_profile():
 	ip = request.headers.get('X-Forwarded-For', request.remote_addr)
 	x = BrootForceProtection(request.json['name'], request.json['password'], ip, fast_login)()
 	if x['successfully']:
-		user = users.get_by_id(request.json['name'])
+		user = users.get(request.json['name'])
 		if user:
 			temp = dict(user)
 			del temp['password']
@@ -691,7 +691,7 @@ def get_user_profile():
 
 @app.route('/api/get_user_profile_public', methods=['POST'])
 def get_user_profile_public():
-	user = users.get_by_id(request.json['user'])
+	user = users.get(request.json['user'])
 	if user:
 		temp = dict(user)
 		public_fields = {}
@@ -710,7 +710,7 @@ def edit_user_profile():
 	ip = request.headers.get('X-Forwarded-For', request.remote_addr)
 	x = BrootForceProtection(request.json['name'], request.json['password'], ip, fast_login)()
 	if x['successfully']:
-		user = users.get_by_id(request.json['name'])
+		user = users.get(request.json['name'])
 		if user:
 			edit_user(user, request.json)
 			return jsonify({'successfully': True})
@@ -724,14 +724,14 @@ def edit_user_profile():
 def get_statistic():
 	track_dir = Path(os.path.dirname(request.json['url'])).parts
 	clear_track_dir = list(filter(lambda x: x != "\\", track_dir))
-	track_id = tracks.get(path=clear_track_dir)
-	track = tracks.get_by_id(track_id)
+	track_id = tracks.find(path=clear_track_dir)
+	track = tracks.get(track_id)
 	statistic = track['statistics']
 	if ('user' in request.json.keys() and 'password' in request.json.keys()):
 		ip = request.headers.get('X-Forwarded-For', request.remote_addr)
 		x = BrootForceProtection(request.json['user'], request.json['password'], ip, fast_login)()
 		if x['successfully']:
-			user = users.get_by_id(request.json['user'])
+			user = users.get(request.json['user'])
 			favorites = []
 			if 'favorites' in user.keys():
 				favorites = user['favorites']
@@ -747,12 +747,12 @@ def like():
 		track_dir = Path(os.path.dirname(request.json['url'])).parts
 		clear_track_dir = list(filter(lambda x: x != "\\", track_dir))
 		clear_track_dir_str = os.path.join(*clear_track_dir)
-		track_id = tracks.get(path=clear_track_dir)
+		track_id = tracks.find(path=clear_track_dir)
 		statistic = {"likes":0}
 		if track_id:
-			track = tracks.get_by_id(track_id)
+			track = tracks.get(track_id)
 			statistic = track['statistics']
-		user = users.get_by_id(request.json['user'])
+		user = users.get(request.json['user'])
 		favorites = []
 		if 'favorites' in user.keys():
 			favorites = user['favorites']
@@ -783,15 +783,15 @@ def get_favorites():
 			favorites = user_data['favorites']
 		favorites_new = []
 		for i in favorites:
-			track_id = tracks.get(path=list(Path(i).parts))
+			track_id = tracks.find(path=list(Path(i).parts))
 			if track_id:
-				track = tracks.get_by_id(track_id)
+				track = tracks.get(track_id)
 			else:
 				track = {'track': "Deleted Track", 'status': 'deleted', 'path': list(Path(i).parts)}
 			favorites_new.append(track)
 		return favorites_new
 
-	user_data = users.get_by_id(request.json['user'])
+	user_data = users.get(request.json['user'])
 	if ('password' in request.json.keys()):
 		ip = request.headers.get('X-Forwarded-For', request.remote_addr)
 		x = BrootForceProtection(request.json['user'], request.json['password'], ip, fast_login)()
@@ -821,7 +821,7 @@ def delete_user(user):
 # Admin
 @app.route('/api/admin', methods=['POST'])
 def is_admin():
-	user = users.get_by_id(request.json['user'])
+	user = users.get(request.json['user'])
 	if user:
 		if "role" in user.keys() and user['role'] == "admin":
 			ip = request.headers.get('X-Forwarded-For', request.remote_addr)
@@ -833,10 +833,10 @@ def is_admin():
 					elif request.json['command'] == "get_all_tracks":
 						return jsonify({'successfully': True, 'data': list(tracks.data)})
 					elif request.json['command'] == "get_all_admins":
-						admins = users.get(role="admin", all=True)
+						admins = users.find_all(role="admin")
 						return jsonify({'successfully': True, 'data': admins})
 					elif request.json['command'] == "get_user_roles":
-						user = users.get_by_id(request.json['user_to_get'])
+						user = users.get(request.json['user_to_get'])
 						roles = {}
 						if 'role' in user.keys():
 							roles['role'] = user['role']
@@ -844,12 +844,12 @@ def is_admin():
 							roles['official'] = user['official']
 						return jsonify({'successfully': True, 'data': roles})
 					elif request.json['command'] == "change_role":
-						user = users.get_by_id(request.json['user_to_change'])
+						user = users.get(request.json['user_to_change'])
 						user['role'] = request.json['new_value']
 						users.save()
 						return jsonify({'successfully': True, 'user': request.json['user_to_change'], 'role': request.json['new_value']})
 					elif request.json['command'] == "change_official":
-						user = users.get_by_id(request.json['user_to_change'])
+						user = users.get(request.json['user_to_change'])
 						user['official'] = parse_boolean(request.json['new_value'])
 						users.save()
 						return jsonify({'successfully': True, 'user': request.json['user_to_change'], 'official': parse_boolean(request.json['new_value'])})
@@ -865,10 +865,10 @@ def is_admin():
 								return jsonify({'successfully': True, 'deleted': True})
 							return jsonify({'successfully': False})
 					elif request.json['command'] == "get_password":
-						user = users.get_by_id(request.json['user_to_login'])
+						user = users.get(request.json['user_to_login'])
 						return jsonify({'successfully': True, 'password': user['password']})
 					elif request.json['command'] == "reset_password":
-						user = users.get_by_id(request.json['user_to_reset'])
+						user = users.get(request.json['user_to_reset'])
 						return jsonify({'successfully': True, 'user': request.json['user_to_reset'], 'password': user['password']})
 
 				return jsonify({'successfully': True})
