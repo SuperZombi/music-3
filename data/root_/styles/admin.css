@@ -2,10 +2,34 @@
 	display: none;
 	border: 1px solid;
 }
-#console{
+#console_wrapper{
 	position: fixed;
 	left: 0;
 	bottom:0;
+	width: 100%;
+	display: flex;
+	max-height: 40%;
+}
+#enter{
+	display: flex;
+	align-items: center;
+	background: #182E60;
+	font-size: 24pt;
+	padding: 0 5px 0 5px;
+	cursor: pointer;
+	transition: color 0.2s, padding 0.2s, background 0.3s;
+	user-select: none;
+}
+#enter:hover{
+	padding: 0 8px 0 8px;
+	color: #00FF00;
+}
+#enter:active{
+	background: #214086;
+}
+#console{
+	overflow-y: auto;
+	word-break: break-word;
 	width: 100%;
 	background: #1c2333;
 	min-height: 100px;
