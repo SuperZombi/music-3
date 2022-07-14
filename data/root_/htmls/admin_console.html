@@ -22,17 +22,24 @@ body = `
 		<div class="radio">
 			<input label="Search" type="radio" name="show_search" onclick="doFastCommand(this)">
 		</div>
+		<div class="radio">
+			<input label="Clear Console" type="radio" name="clear_console" checked style="background: darkred;" onclick="clearConsole()">
+		</div>
 
 		<div id="search_menu">
 			<div class="radio">
 				<input label="Track" type="radio" name="search_type" value="track">
 				<input label="User" type="radio" name="search_type" value="user">
-				<input type="text" name="search_value">
+				<input label="Email" type="radio" name="search_type" value="email">
+				<input type="text" name="search_value" style="cursor:auto">
 				<input label="Search" type="radio" name="search" checked onclick="doFastCommand(this)">
 			</div>
 		</div>
 
-		<div id="console"><a class="admin">admin></a></div>
+		<div id="console_wrapper">
+			<div id="console"><a class="admin">admin></a></div>
+			<div id="enter" onclick="exec_console_command()">⮨</div>
+		</div>
 	</div>
 </div>
 </div>
