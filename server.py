@@ -870,6 +870,9 @@ def is_admin():
 					elif request.json['command'] == "get_all_admins":
 						admins = users.find_all(role="admin")
 						return jsonify({'successfully': True, 'data': admins})
+					elif request.json['command'] == "search_by_email":
+						users_arr = users.find_all(email=request.json['email'])
+						return jsonify({'successfully': True, 'data': users_arr})
 					elif request.json['command'] == "get_user_roles":
 						user = users.get(request.json['user_to_get'])
 						roles = {}
