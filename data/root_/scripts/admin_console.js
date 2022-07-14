@@ -269,29 +269,56 @@ function doFastCommand(element){
 		let search_text = document.querySelector("input[name=search_value]").value
 
 		if (search_type && search_text){
-			let data = {
-				'type': search_type,
-				'text': search_text
+			if (search_type == "email"){
+				let data = {
+					'user': local_storage.userName,
+					'password': local_storage.userPassword,
+					'email': search_text,
+					'command': 'search_by_email'
+				}
+				fetch('/api/admin', {
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {'Content-Type': 'application/json'}
+				}).then(answer => answer.json()).then(answer => {
+					if (answer.successfully){
+						let new_arr = [];
+						answer.data.forEach(e=>{new_arr.push({'user': e})})
+						do_after(new_arr);
+					}
+					else{
+						clearConsole()
+						document.getElementById("console").innerHTML += "ERROR"
+					}
+				})
 			}
-			fetch('/api/search', {
-				method: 'POST',
-				body: JSON.stringify(data),
-				headers: {'Content-Type': 'application/json'}
-			}).then(answer => answer.json()).then(answer => {
+			else{
+				let data = {
+					'type': search_type,
+					'text': search_text
+				}
+				fetch('/api/search', {
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {'Content-Type': 'application/json'}
+				}).then(answer => answer.json()).then(answer => {do_after(answer)})
+			}
+			function do_after(array){
 				clearConsole()
 				document.getElementById("console").innerHTML += `<a class="custom_command">Search ${search_type}</a>` + "<br>"
 
-				if (answer.length == 0){
+				if (array.length == 0){
 					document.getElementById("console").innerHTML += "Nothing Found"
 				}
 				else{
 					let span = document.createElement('span')
 					span.className = "select_list"
-					answer.forEach(el =>{
+					array.forEach(el =>{
 						let element = document.createElement('a')
 						element.className = "clickable_element"
-						if (search_type == "user"){
+						if (search_type == "user" || search_type == "email"){
 							element.innerHTML = el.user
+							search_type = "user"
 							element.setAttribute("onclick","make_something_with('"+search_type+"', '"+el.user+"');");
 						}
 						else if (search_type == "track"){
@@ -302,7 +329,7 @@ function doFastCommand(element){
 					})
 					document.getElementById("console").appendChild(span)
 				}
-			})	
+			}
 		}
 	}
 }
@@ -321,6 +348,8 @@ function exec_console_command(){
 	Array.from(command).forEach(e=>{
 		command_array.push(e.innerText.toLowerCase())
 	})
+
+	if (!command_array[0]){return}
 
 	clearConsole()
 
