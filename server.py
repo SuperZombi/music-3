@@ -265,6 +265,8 @@ def fast_login(user, password):
 	data = users.get(user)
 	if data:
 		if data['password'] == password:
+			data['last_online'] = int(time.time())
+			users.save()
 			return True
 	return False
 
