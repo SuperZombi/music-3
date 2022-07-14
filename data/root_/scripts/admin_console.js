@@ -378,6 +378,19 @@ function exec_console_command(){
 					element.innerHTML = url
 					element.setAttribute("onmousedown","copy_url(event, '"+url+"');");
 					document.getElementById("console").appendChild(element)
+
+					document.getElementById("console").innerHTML += "<br>"
+
+					let a = document.createElement('a')
+					a.className = "custom_command"
+
+					let link = new URL("/api/reset_pwd_html", window.location.href)
+					let link_argument = new URL(url, window.location.href)
+					link.searchParams.set('url', link_argument);
+					a.href = link.href
+					a.target = "_blank"
+					a.innerHTML = 'Get html'
+					document.getElementById("console").appendChild(a)
 				}
 			}
 		}
