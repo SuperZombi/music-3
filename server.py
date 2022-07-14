@@ -818,6 +818,41 @@ def delete_user(user):
 		except: None
 	return False
 
+@app.route('/api/reset_pwd_html', methods=['GET','POST'])
+def reset_pwd_html():
+	def get_html():
+		args = {'link': ''}
+		if 'lang' in request.args.keys():
+			args['lang'] = request.args['lang']
+		if "url" in request.args.keys():
+			args['link'] = request.args['url']
+
+		return htmlTemplates.reset_password(**args)
+
+	html = get_html()
+	if 'textMode' in request.args.keys():
+		return jsonify( "".join( "".join(html.split("\t")) .split("\n")).replace('"', "'")  )
+	else:
+		Final_html = '''
+			<head><meta name="viewport" content="width=device-width"></head>
+			<script>
+				function change_lang(lang){
+					const args = new URLSearchParams(window.location.search);
+					args.set('lang', lang)
+					location.search = args.toString()
+				}
+			</script>
+			<a href="javascript:location.search+='&textMode=true'"><button style="font-size:14pt;">Text mode</button></a>
+			<div style="float:right;">
+				<button onclick="change_lang('en')" style="font-size:14pt;cursor:pointer;">En</button>
+				<button onclick="change_lang('ru')" style="font-size:14pt;cursor:pointer;">Ru</button>
+			</div>
+			<hr>
+		'''
+		return Final_html + html
+		
+
+
 # Admin
 @app.route('/api/admin', methods=['POST'])
 def is_admin():
