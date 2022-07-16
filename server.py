@@ -3,7 +3,7 @@ import shutil
 import time
 from pathlib import Path
 from dateutil import parser as dataparse
-from flask import Flask, request, jsonify, send_from_directory, send_file, abort, redirect
+from flask import Flask, request, jsonify, send_from_directory, send_file, abort, redirect, Response
 from flask_cors import CORS
 import json
 import filetype
@@ -18,6 +18,7 @@ from tools.DataBase import DataBase
 from tools.serverErrors import Errors
 from tools.BrootForceProtection import BrootForceProtection
 import tools.htmlTemplates as htmlTemplates
+from textwrap import dedent
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 CORS(app)
@@ -833,7 +834,7 @@ def reset_pwd_html():
 
 	html = get_html()
 	if 'textMode' in request.args.keys():
-		return jsonify( "".join( "".join(html.split("\t")) .split("\n")).replace('"', "'")  )
+		return Response(dedent(html.replace("	", "    ")), mimetype='text/plain')
 	else:
 		Final_html = '''
 			<head><meta name="viewport" content="width=device-width"></head>
