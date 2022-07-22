@@ -47,6 +47,7 @@ async function main(){
 	initTabs()
 
 	let loc_seach = window.location.search.replace("?", "");
+	if (loc_seach){ document.querySelector(`.tabs > li[data=${loc_seach}]`).scrollIntoView(); }
 	if (loc_seach && loc_seach != "all-tracks"){
 		changeTab(document.querySelector(`.tabs > li[data=${loc_seach}]`), true)
 	}
