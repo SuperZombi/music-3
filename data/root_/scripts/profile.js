@@ -4,6 +4,10 @@
 		document.body.innerHTML += header
 		document.body.innerHTML += body
 
+		document.getElementById('header').innerHTML += `
+			<div id="menu_but" class="menu_but_wraper hide_on_desktop" onclick="open_menu()"><div class="menu_but"><div></div></div></div>
+		`
+
 		setTimeout(function(){document.body.style.transition = "1s"}, 500)
 		main()
 		document.getElementById("preloader").style.display = "none"
@@ -582,9 +586,9 @@ function loadSettings() {
 				else if (i == "phone"){
 					phoneMask.unmaskedValue = data[i];
 				}
-				else if (i == "role" && data[i] == "admin"){
-					document.getElementById("console-icon").style.display = "flex"
-				}
+				// else if (i == "role" && data[i] == "admin"){
+				// 	document.getElementById("console-icon").style.display = "flex"
+				// }
 				else{
 					try{
 						let input = document.querySelector(`.settings_element input[name=${i}]`)
@@ -748,4 +752,27 @@ function reset_password(){
 	login.hash = "reset";
 
 	window.location.href = decodeURIComponent(login.href)
+}
+
+
+function open_menu(){
+	let button = document.getElementById("menu_but").children[0];
+	button.classList.toggle("menu_active")
+	if (button.classList.contains("menu_active")){
+		document.getElementById('menu').classList.add("menu_active")
+	}
+	else{
+		document.getElementById('menu').classList.remove("menu_active")
+	}
+}
+
+function collapse(){
+	let menu = document.getElementById("menu");
+	menu.classList.toggle("collapsed")
+	if (menu.classList.contains("collapsed")){
+		document.getElementById('collapse_but').style.transform = "rotateY(180deg)"
+	}
+	else{
+		document.getElementById('collapse_but').style.transform = ""
+	}
 }
