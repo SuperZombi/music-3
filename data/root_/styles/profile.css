@@ -1,3 +1,16 @@
+html{
+	overflow-y: hidden;
+}
+.menu_but_wraper{
+	cursor: pointer;
+	display: inline-flex;
+	position: relative;
+	float: left;
+	height: 72px;
+	align-items: center;
+	margin-left: 10px;
+	margin-right: 5px;
+}
 #card_previewer{
 	display: none;
 	height: 80px;
@@ -59,6 +72,69 @@
 
 #notifications > * > .Message-body > p{
 	width: 100%;
+}
+
+
+#menu{
+	background: var(--menu-el);
+	font-size: 14pt;
+	font-family: Arial, Ubuntu, sans-serif;
+	width: 19%;
+	height: calc(100vh - 70px);
+	vertical-align: top;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	transition: 0.5s;
+}
+#menu > .menu-element{
+	padding: 10px;
+	cursor: pointer;
+	transition: 0.12s;
+	padding-left: 0;
+}
+#menu > .menu-element:hover{
+	background: var(--menu-el-hover);
+}
+#menu > .active{
+	background: var(--menu-el-active);
+}
+
+.menu-element > *{
+	line-height: 1;
+}
+.menu-icon{
+	width: 40px;
+	display: inline-block;
+	text-align: center;
+}
+.menu-text{
+	display: inline-block;
+}
+
+#menu.collapsed{
+	width: 40px;
+}
+
+
+#page-content{
+	display: inline-block;
+	width: 81%;
+	height: calc(100vh - 70px);
+	overflow-y: auto;
+	transition: 0.5s;
+}
+
+#menu.collapsed + #page-content{
+	width: calc(100vw - 40px);
+}
+
+.category{
+	width: calc(100% - 20px) !important;
+}
+
+#collapse_but{
+	transition: 0.3s;
 }
 
 
@@ -438,6 +514,14 @@ details[open] > summary:before {
 	border-top: none;
 }
 
+
+.hide_on_desktop{
+	display: none;
+}
+.hide_on_phone{
+	display: block;
+}
+
 @media all and (max-width: 500px) {
 	details#settings {
 		max-width: 98%;
@@ -453,6 +537,24 @@ details[open] > summary:before {
 	.center-wrap {
 		justify-content: space-between;
 	}
+	#menu{
+		width: 100% !important;
+		position: absolute;
+		z-index: 10;
+		top: 100%;
+		transition: 1s;
+		border-radius: 20px 20px 0 0;
+	}
+	#menu.menu_active{
+		top: 70px;
+		border-radius: 0 0 0 0;
+	}
+	#page-content{ width: 100% !important; }
+	#menu > .menu-element{
+		padding: 20px;
+	}
+	.hide_on_phone{ display: none !important; }
+	.hide_on_desktop{ display: flex; }
 }
 
 
