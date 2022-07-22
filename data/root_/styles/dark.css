@@ -22,6 +22,10 @@
 	--tabs-hover: rgba(255, 255, 255, .3);
 
 	--settings-back: rgba(255, 255, 255, 0.1);
+
+	--menu-el: #3d3e39;
+	--menu-el-hover: #909389;
+	--menu-el-active: #62645c;
 }
 ::-webkit-scrollbar
 {
