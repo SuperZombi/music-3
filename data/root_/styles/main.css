@@ -32,6 +32,10 @@
 	--tabs-hover: rgb(173, 216, 230, 0.5);
 
 	--settings-back: rgba(120, 120, 120, 0.1);
+
+	--menu-el: #E8E8E8;
+	--menu-el-hover: #C5C5C5;
+	--menu-el-active: #AAAAAA;
 }
 ::-webkit-scrollbar
 {
@@ -1434,4 +1438,35 @@ div.ripple {
 		transform: unset;
 		right: 0;
 	}
+}
+
+.menu_but:before,.menu_but:after,.menu_but div {
+	background: #fff;
+	content: "";
+	display: block;
+	height: 4px;
+	width: 35px;
+	border-radius: 3px;
+	margin: 8px 0;
+	transition: 0.5s;
+}
+.menu_but:hover:before,.menu_but:hover:after,.menu_but:hover div{
+	background-color: yellow;
+	width: 44px;
+}
+
+.menu_but.menu_active:hover:before,.menu_but.menu_active:hover:after,.menu_but.menu_active:hover div{
+	background-color: darkred;
+	width: 35px;
+}
+.menu_but.menu_active:before {
+	transform: translateY(12px) rotate(135deg);
+	background-color: red;
+}
+.menu_but.menu_active:after {
+	transform: translateY(-12px) rotate(-135deg);
+	background-color: red;
+}
+.menu_but.menu_active div {
+	transform: scale(0);
 }
