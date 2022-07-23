@@ -29,6 +29,7 @@ LANG = {
 	"big": "Big",
 
 	"views": "Views",
+	"likes": "Likes",
 	"like_it": "Like",
 	"unlike_it": "Dislike",
 	"liked": "Added to Favorites",
@@ -76,6 +77,9 @@ LANG = {
 	"collapse": "Collapse",
 	"expand": "Expand",
 	"my_tracks": "My Tracks",
+	"statistics": "Statistics",
+	"admin_console": "Admin Console",
+	"content": "Content",
 
 	// Artist
 	"overview_tab": "Overview",
