@@ -71,6 +71,12 @@ LANG = {
 	"by_date": "By Date",
 	"by_popularity": "By Popularity",
 
+	"menu": "Menu",
+	"dashboard": "Dashboard",
+	"collapse": "Collapse",
+	"expand": "Expand",
+	"my_tracks": "My Tracks",
+
 	// Artist
 	"overview_tab": "Overview",
 	"all_tab": "All Tracks",
