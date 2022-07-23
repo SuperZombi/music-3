@@ -5,7 +5,7 @@
 		document.body.innerHTML += body
 
 		document.getElementById('header').innerHTML += `
-			<div id="menu_but" class="menu_but_wraper hide_on_desktop" onclick="open_menu()"><div class="menu_but"><div></div></div></div>
+			<div id="menu_but" title="${LANG.menu}" class="menu_but_wraper hide_on_desktop" onclick="open_menu()"><div class="menu_but"><div></div></div></div>
 		`
 
 		setTimeout(function(){document.body.style.transition = "1s"}, 500)
@@ -750,12 +750,15 @@ function open_menu(){
 
 function collapse(){
 	let menu = document.getElementById("menu");
+	let button = document.getElementById('collapse_but')
 	menu.classList.toggle("collapsed")
 	if (menu.classList.contains("collapsed")){
-		document.getElementById('collapse_but').style.transform = "rotateY(180deg)"
+		button.style.transform = "rotateY(180deg)"
+		button.title = LANG.expand
 	}
 	else{
-		document.getElementById('collapse_but').style.transform = ""
+		button.style.transform = ""
+		button.title = LANG.collapse
 	}
 }
 
