@@ -4,16 +4,15 @@ body = `
 <div id="notifications"></div>
 
 
-
 <div id="menu">
-	<div class="menu-element active" data="dashboard">
+	<div class="menu-element active" data="dashboard" title="${LANG.dashboard}">
 		<span class="menu-icon">🏠</span>
-		<span class="menu-text">Главная</span>
+		<span class="menu-text">${LANG.dashboard}</span>
 	</div>
 
-	<div class="menu-element" data="tracks">
+	<div class="menu-element" data="tracks" title="${LANG.my_tracks}">
 		<span class="menu-icon">🎵</span>
-		<span class="menu-text">Мои треки</span>
+		<span class="menu-text">${LANG.my_tracks}</span>
 	</div>
 
 	<div class="menu-element" data="statistics">
@@ -21,19 +20,19 @@ body = `
 		<span class="menu-text">Статистика</span>
 	</div>
 
-	<a class="menu-element" href="/admin" target="_blank" id="console-icon" style="display:none">
+	<a class="menu-element" href="/admin" target="_blank" title="Admin Console" id="console-icon" style="display:none">
 		<span class="menu-icon"><img src="../root_/images/terminal.svg"></span>
 		<span class="menu-text">Admin Console</span>
 	</a>
 
-	<div class="menu-element" data="settings">
+	<div class="menu-element" data="settings" title="${LANG.settings}">
 		<span class="menu-icon">⚙</span>
-		<span class="menu-text">Настройки</span>
+		<span class="menu-text">${LANG.settings}</span>
 	</div>
 
-	<div class="menu-element hide_on_phone collapse_but_wraper" onclick="collapse()">
+	<div class="menu-element hide_on_phone collapse_but_wraper" onclick="collapse()" title="${LANG.collapse}">
 		<span class="menu-icon" id="collapse_but"><</span>
-		<span class="menu-text">Свернуть</span>
+		<span class="menu-text">${LANG.collapse}</span>
 	</div>
 </div>
 
