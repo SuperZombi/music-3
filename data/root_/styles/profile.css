@@ -1,5 +1,6 @@
 html{
 	overflow-y: hidden;
+	font-family: sans-serif;
 }
 .menu_but_wraper{
 	cursor: pointer;
@@ -147,6 +148,14 @@ html{
 	height: calc(100vh - 70px);
 	overflow-y: auto;
 	transition: 0.5s;
+	position: relative;
+}
+
+.tab-content{
+	display: none;
+}
+.tab-content.active{
+	display: block;
 }
 
 #menu.collapsed + #page-content{
@@ -272,6 +281,35 @@ html{
 	padding-bottom: unset;	
 }
 
+#settings{
+	background: var(--login_back);
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+#settings_area{
+	overflow-y: auto;
+	max-height: calc(100vh - 170px);
+}
+#settings_area:after{
+	content: '';
+	display: block;
+	height: 60px;
+}
+#save_button{
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	background: var(--header-color);
+	opacity: 0.9;
+	transition: 0.2s;
+}
+#save_button:hover{
+	opacity: 1;
+}
+
 /* INPUTS */
 .group *{
 	box-sizing: border-box;
@@ -368,7 +406,7 @@ html{
 	display: inline-block;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 20px;
+	margin-top: 15px;
 	margin-bottom: 15px;
 	border: 5em;
 	cursor: pointer;
@@ -474,23 +512,6 @@ summary {
 	font-size: 14pt;
 	color: var(--contrast-color);
 }
-#settings > summary {
-	border: 2px solid transparent;
-	outline: none;
-	background: var(--header-color);
-	transition: border-color 0.3s;
-	font-size: 16pt;
-}
-#settings > summary:focus {
-	border-color: var(--details_border);
-}
-details#settings{
-	max-width: 50%;
-	box-sizing: border-box;
-	margin: 6px auto;
-	background: var(--details_content);
-	font-family: "Open Sans", sans-serif;
-}
 details summary::-webkit-details-marker {
 	display: none;
 }
@@ -506,19 +527,12 @@ summary:before {
 	transform-origin: 0.2rem 50%;
 	transition: 0.25s transform ease;
 }
-#settings > details[open] {
-	margin-bottom: 25px;
-}
 details[open] > summary:before {
 	transform: rotate(90deg);
 }
 .content {
 	padding: 10px;
 	text-align: center;
-}
-#settings > .content {
-	border: 2px solid var(--details_border);
-	border-top: none;
 }
 
 
@@ -546,7 +560,7 @@ details[open] > summary:before {
 		position: absolute;
 		z-index: 10;
 		top: 100%;
-		transition: 1s;
+		transition: 0.6s;
 		border-radius: 20px 20px 0 0;
 	}
 	#menu.menu_active{
@@ -567,6 +581,7 @@ details[open] > summary:before {
 	justify-content: center;
 	align-items: center;
 	margin-left: 5%;
+	filter: drop-shadow(0 0 1px white);
 }
 .switcher .btn {
 	border: 3px solid #1a1a1a;
