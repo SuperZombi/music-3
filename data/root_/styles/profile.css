@@ -99,6 +99,9 @@ html{
 #menu > .active{
 	background: var(--menu-el-active);
 }
+#menu > .menu-element.active:hover{
+	background: var(--menu-el-hover_and_active);
+}
 
 .menu-element > *{
 	line-height: 1;
