@@ -1439,6 +1439,10 @@ div.ripple {
 		transform: unset;
 		right: 0;
 	}
+	#menu_but::after{
+		top: unset;
+		bottom: 0;
+	}
 }
 
 .menu_but:before,.menu_but:after,.menu_but div {
