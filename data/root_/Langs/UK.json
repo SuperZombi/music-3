@@ -29,6 +29,7 @@ LANG = {
 	"big": "Великий",
 
 	"views": "Перегляди",
+	"likes": "Лайки",
 	"like_it": "Подобається",
 	"unlike_it": "Не подобається",
 	"liked": "Додано в Обране",
@@ -76,6 +77,9 @@ LANG = {
 	"collapse": "Згорнути",
 	"expand": "Розгорнути",
 	"my_tracks": "Мої Треки",
+	"statistics": "Статистика",
+	"admin_console": "Консоль",
+	"content": "Контент",
 
 	// Artist
 	"overview_tab": "Огляд",
