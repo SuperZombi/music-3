@@ -140,7 +140,6 @@ function loadProfileImage(){
 async function submain() {
 	loadProfileImage();
 	loadSettings();
-	settingsController();
 	initTabs();
 
 	let xhr = new XMLHttpRequest();
@@ -161,24 +160,6 @@ async function submain() {
 			}
 		}
 	}
-}
-
-
-function settingsController(){
-	function removeHash() { 
-		history.pushState("", document.title, window.location.pathname + window.location.search);
-	}
-	if (location.hash.substring(1) == "settings"){
-		document.getElementById("settings").open = true;
-	}
-	document.getElementById("settings").addEventListener("toggle", ()=>{
-		if (document.getElementById("settings").hasAttribute("open")){
-			location.hash = "settings"
-		}
-		else{
-			removeHash()
-		}
-	})
 }
 
 function showScrollTop(){
@@ -782,9 +763,16 @@ function changeTab(target){
 	let currentTab = document.querySelector("#menu > .menu-element.active");
 	let targetTab = document.querySelector(`#menu > .menu-element[data=${target}]`);
 	if (currentTab != targetTab){
-		window.location.hash = target;
 		currentTab.classList.remove("active")
 		targetTab.classList.add("active")
+		window.location.hash = target;
+		let currentTabContent = document.querySelector("#page-content > .tab-content.active");
+		let targetTabContent = document.querySelector(`#page-content > .tab-content[data=${target}]`);
+		currentTabContent.classList.remove("active")
+		targetTabContent.classList.add("active")
+		if (document.getElementById('menu').classList.contains("menu_active")){
+			open_menu()
+		}
 	}
 }
 
@@ -795,4 +783,7 @@ function initTabs(){
 			changeTab(tab.getAttribute("data"))
 		}
 	})
+	if (window.location.hash){
+		changeTab(window.location.hash.split("#")[1])
+	}
 }
