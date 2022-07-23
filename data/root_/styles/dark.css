@@ -26,6 +26,7 @@
 	--menu-el: #3d3e39;
 	--menu-el-hover: #909389;
 	--menu-el-active: #62645c;
+	--menu-el-hover_and_active: #A9A9A9;
 }
 ::-webkit-scrollbar
 {
