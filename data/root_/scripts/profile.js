@@ -848,6 +848,7 @@ function changeTab(target){
 	let currentTab = document.querySelector("#menu > .menu-element.active");
 	let targetTab = document.querySelector(`#menu > .menu-element[data=${target}]`);
 	if (currentTab != targetTab){
+		document.title = `${LANG.profile_title} - ${targetTab.title}`
 		currentTab.classList.remove("active")
 		targetTab.classList.add("active")
 		window.location.hash = target;
