@@ -536,6 +536,86 @@ details[open] > summary:before {
 }
 
 
+#statistics_area{
+	overflow-x: auto;
+}
+#statistics_area > .track{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--contrast-color);
+}
+#statistics_area > .track > .track_info{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 70%;
+}
+#statistics_area > .track > .track_info > .image{
+	height: 80px;
+	width: 100px;
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-color: black;
+	cursor: alias;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	transition: 0.5s;
+}
+#statistics_area > .track > .track_info > .image:hover{
+	filter: grayscale(1);
+}
+#statistics_area > .track > .track_info > .image > *{
+	opacity: 0;
+	color: var(--contrast-color);
+	transition: 0.25s;
+	text-shadow: 
+		2px 2px 2px black, 
+		0 2px 2px black, 
+		-2px 0 2px black, 
+		0 -2px 2px black;
+}
+#statistics_area > .track > .track_info > .image:hover > *{
+	opacity: 1;
+}
+#statistics_area > .track > .track_info > .track_name_and_date{
+	margin-left: 10px;
+	font-size: 14pt;
+	display: flex;
+	flex-direction: column;
+}
+#statistics_area > .track > .track_info > .track_name_and_date > .name{
+	text-decoration: none;
+	color: var(--contrast-color);
+	transition: 0.15s;
+}
+#statistics_area > .track > .track_info > .track_name_and_date > .name:hover{
+	color: blue;
+}
+#statistics_area > .track > .track_info > .track_name_and_date > .date{
+	font-size: 10pt;
+	margin-top: 4px;
+	color: var(--contrast-mini);
+}
+#statistics_area > .track > .likes_and_views{
+	width: 30%;
+	display: flex;
+	justify-content: space-around;
+}
+#statistics_area > .track > .likes_and_views > *{
+	width: 100%;
+	text-align: center;
+	margin-right: 10px;
+	margin-left: 10px;
+	white-space: nowrap;
+}
+
+
 @media all and (min-width: 500px) {
 	.hide_on_desktop{ display: none !important; }
 }
@@ -572,6 +652,14 @@ details[open] > summary:before {
 		padding: 20px;
 	}
 	.hide_on_phone{ display: none !important; }
+
+	#statistics_area > .track{
+		padding: 5px;
+	}
+	#statistics_area > .track > .track_info > .image{
+		height: 60px;
+		width: 60px;
+	}
 }
 
 
