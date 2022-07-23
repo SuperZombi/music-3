@@ -5,11 +5,10 @@ html{
 	cursor: pointer;
 	display: inline-flex;
 	position: relative;
-	float: left;
-	height: 72px;
+	float: right;
+	height: 75px;
 	align-items: center;
-	margin-left: 10px;
-	margin-right: 5px;
+	margin-right: 12px;
 }
 #card_previewer{
 	display: none;
@@ -86,6 +85,7 @@ html{
 	white-space: nowrap;
 	overflow: hidden;
 	transition: 0.5s;
+	position: relative;
 }
 #menu > .menu-element{
 	padding: 10px;
@@ -114,6 +114,12 @@ html{
 
 #menu.collapsed{
 	width: 40px;
+}
+
+.collapse_but_wraper{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 
 
@@ -515,11 +521,8 @@ details[open] > summary:before {
 }
 
 
-.hide_on_desktop{
-	display: none;
-}
-.hide_on_phone{
-	display: block;
+@media all and (min-width: 500px) {
+	.hide_on_desktop{ display: none !important; }
 }
 
 @media all and (max-width: 500px) {
@@ -554,7 +557,6 @@ details[open] > summary:before {
 		padding: 20px;
 	}
 	.hide_on_phone{ display: none !important; }
-	.hide_on_desktop{ display: flex; }
 }
 
 
