@@ -29,6 +29,7 @@ LANG = {
 	"big": "Большой",
 
 	"views": "Просмотры",
+	"likes": "Лайки",
 	"like_it": "Нравится",
 	"unlike_it": "Не нравится",
 	"liked": "Добавлено в Избранное",
@@ -76,6 +77,9 @@ LANG = {
 	"collapse": "Свернуть",
 	"expand": "Развернуть",
 	"my_tracks": "Мои Треки",
+	"statistics": "Статистика",
+	"admin_console": "Консоль",
+	"content": "Контент",
 
 	// Artist
 	"overview_tab": "Обзор",
