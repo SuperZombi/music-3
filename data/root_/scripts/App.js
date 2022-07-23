@@ -46,7 +46,9 @@ function parseHTML(html) {
 function parseAtribute(string){
 	let arr = string.split("=")
 	let a = document.createAttribute(arr[0])
-	a.value = arr[1].replace(/['"]+/g, '')
+	if (arr.length > 1){
+		a.value = arr[1].replace(/['"]+/g, '')
+	}
 	return a;
 }
 
@@ -81,10 +83,15 @@ async function load_source(element){
 
 function loadApp(imports){
 	let array = imports.split('\n').map(e=>e.trim()).filter(n=>n);
-	function next(arr) {
+	async function next(arr) {
 		if (arr.length) {
 			let el = parseHTML(arr.shift())
-			load_source(el)
+			if(el.hasAttribute("required")){
+				await load_source(el)
+			}
+			else{
+				load_source(el)
+			}
 			next(arr)
 		}
 	}
