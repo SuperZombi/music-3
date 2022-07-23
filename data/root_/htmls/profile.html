@@ -15,14 +15,14 @@ body = `
 		<span class="menu-text">${LANG.my_tracks}</span>
 	</div>
 
-	<div class="menu-element" data="statistics">
+	<div class="menu-element" data="statistics" title="${LANG.statistics}">
 		<span class="menu-icon">📈</span>
-		<span class="menu-text">Статистика</span>
+		<span class="menu-text">${LANG.statistics}</span>
 	</div>
 
-	<a class="menu-element" href="/admin" target="_blank" title="Admin Console" id="console-icon" style="display:none">
+	<a class="menu-element" href="/admin" target="_blank" title="${LANG.admin_console}" id="console-icon" style="display:none">
 		<span class="menu-icon"><img src="../root_/images/terminal.svg"></span>
-		<span class="menu-text">Admin Console</span>
+		<span class="menu-text">${LANG.admin_console}</span>
 	</a>
 
 	<div class="menu-element" data="settings" title="${LANG.settings}">
@@ -243,12 +243,10 @@ body = `
 	<div class="tab-content" data="statistics">
 		<div id="statistics_area">
 			<div class='track' style="font-weight: bold; padding-top: 12px; padding-bottom: 12px;">
-				<span class="track_info" style="justify-content:center;">
-					Контент
-				</span>
+				<span class="track_info" style="justify-content:center;">${LANG.content}</span>
 				<span class="likes_and_views">
-					<span>Просмотры</span>
-					<span>Лайки</span>
+					<span>${LANG.views}</span>
+					<span>${LANG.likes}</span>
 				</span>
 			</div>
 		</div>
