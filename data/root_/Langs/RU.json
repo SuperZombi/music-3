@@ -71,6 +71,12 @@ LANG = {
 	"by_date": "По Дате",
 	"by_popularity": "По Популярности",
 
+	"menu": "Меню",
+	"dashboard": "Главная",
+	"collapse": "Свернуть",
+	"expand": "Развернуть",
+	"my_tracks": "Мои Треки",
+
 	// Artist
 	"overview_tab": "Обзор",
 	"all_tab": "Все Треки",
