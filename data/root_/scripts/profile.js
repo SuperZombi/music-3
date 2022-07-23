@@ -140,25 +140,40 @@ function loadProfileImage(){
 async function submain() {
 	loadProfileImage();
 	loadSettings();
-	initTabs();
 
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", '../api/get_tracks', false)
-	xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-	xhr.send(JSON.stringify({'user': local_storage.userName}))
-	if (xhr.status != 200){ notice.Error(LANG.error) }
-	else{
-		let answer = JSON.parse(xhr.response);
-		if (answer.successfully){
-			document.getElementById("user-name").getElementsByTagName('a')[0].href = "/" + answer.path
-			if (answer.tracks.length == 0){
-				document.getElementById("empty").innerHTML = empty();
+	tabController.onFirstTimeOpen("statistics", _=>{
+		loadTracks();
+	})
+	tabController.onFirstTimeOpen("tracks", _=>{
+		loadTracks();
+	})
+
+	initTabs();
+}
+
+var tracksLoaded = false;
+async function loadTracks(){
+	if (!tracksLoaded){
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", '../api/get_tracks', false)
+		xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+		xhr.send(JSON.stringify({'user': local_storage.userName}))
+		if (xhr.status != 200){ notice.Error(LANG.error) }
+		else{
+			let answer = JSON.parse(xhr.response);
+			if (answer.successfully){
+				document.getElementById("user-name").getElementsByTagName('a')[0].href = "/" + answer.path
+				if (answer.tracks.length == 0){
+					document.getElementById("empty").innerHTML = empty();
+				}
+				else{
+					tracksLoaded = true;
+					await addNewCategory(answer.tracks)
+					overflowed()
+					loadStatistics(answer.tracks)
+				}
 			}
-			else{
-				await addNewCategory(answer.tracks)
-				overflowed()
-			}
-		}
+		}		
 	}
 }
 
@@ -215,25 +230,6 @@ async function addNewCategory(tracks){
 		resolve()
 	});
 }
-
-// function getAllAuthorTracks(bd){
-// 	var tracks = bd.tracks
-// 	var tracks_obj = []
-// 	Object.keys(tracks).forEach(function(e){
-// 		var _temp = Object.assign({"track":e, "href":`${bd.path}/${tracks[e].path}`}, tracks[e])
-// 		tracks_obj.push(_temp)
-// 	})
-// 	return tracks_obj
-// }
-
-// function sortByDate(what){
-// 	what.forEach(function(e){
-// 		var tmp = e.date.split(".")
-// 		var x = new Date(tmp[2], tmp[1]-1, tmp[0])
-// 		e.date = x
-// 	})
-// 	return what.sort((a, b) => b.date - a.date)
-// }
 
 function validateImage(file, compress=true){
 	return new Promise((resolve, reject) => {
@@ -736,6 +732,76 @@ function reset_password(){
 	window.location.href = decodeURIComponent(login.href)
 }
 
+function sortByDate(what){
+	what.forEach(function(e){
+		var tmp = e.date.split(".")
+		var x = new Date(tmp[2], tmp[1]-1, tmp[0])
+		e.date = x
+	})
+	return what.sort((a, b) => b.date - a.date)
+}
+function sortByStat(what){
+	what.forEach(function(e){
+		e.popular = e.statistics.likes + e.statistics.views;
+	})
+	return what.sort((a, b) => b.popular - a.popular)
+}
+
+
+function format_spaces(num){
+	let counter = 0;
+	let new_string = "";
+	const chars = String(num).split('').reverse();
+	chars.forEach(e=>{
+		if (counter == 3){
+			new_string += " "
+			counter = 0
+		}
+		new_string += e
+		counter++
+	})
+	new_string = [...new_string].reverse().join("")
+	return new_string;
+}
+function format_number(num){
+	let new_num = num;
+	if (num >= 1000){
+		new_num = Math.round(num/1000 * 10)/10;
+	}
+	let new_string = format_spaces(parseInt(new_num))
+	const other = String(new_num).split('.')[1]
+	if (other){
+		new_string += "." + other
+	}
+	if (num >= 1000){
+		new_string += "K"
+	}
+	return new_string;
+}
+function loadStatistics(tracks){
+	let div = document.getElementById("statistics_area");
+	sortByStat(tracks).forEach(function(e){
+		let track = document.createElement("div")
+		track.className = "track"
+		track.innerHTML += `
+			<span class="track_info">
+				<a class="image" href="/${e.path.join("/")}" target="_blank"
+					style="background-image:url(/${e.path.join("/")}/${e.image}?size=small)">
+					<span>Open</span>
+				</a>
+				<span class="track_name_and_date">
+					<a href="/${e.path.join("/")}" class="name" target="_blank">${e.track}</a>
+					<span class="date">${e.date}</span>
+				</span>
+			</span>
+			<span class="likes_and_views">
+				<span title="${format_spaces(e.statistics.views)}">${format_number(e.statistics.views)}</span>
+				<span title="${format_spaces(e.statistics.likes)}">${format_number(e.statistics.likes)}</span>
+			</span>
+		`
+		div.appendChild(track)
+	})
+}
 
 function open_menu(){
 	let button = document.getElementById("menu_but").children[0];
@@ -762,6 +828,22 @@ function collapse(){
 	}
 }
 
+var tabController = new tabSwitherController();
+function tabSwitherController(){
+	this.alreadyWasOpened = [];
+	this.eventHandler = {};
+	this.onFirstTimeOpen = function(tab, func){
+		this.eventHandler[tab] = func
+	}
+	this.openedTab = function(tab){
+		if (!this.alreadyWasOpened.includes(tab)){
+			this.alreadyWasOpened.push(tab)
+			if (tab in this.eventHandler){
+				this.eventHandler[tab]()
+			}
+		}
+	}
+}
 function changeTab(target){
 	let currentTab = document.querySelector("#menu > .menu-element.active");
 	let targetTab = document.querySelector(`#menu > .menu-element[data=${target}]`);
@@ -776,6 +858,8 @@ function changeTab(target){
 		if (document.getElementById('menu').classList.contains("menu_active")){
 			open_menu()
 		}
+
+		tabController.openedTab(target)
 	}
 }
 
