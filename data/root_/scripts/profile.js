@@ -787,7 +787,7 @@ function loadStatistics(tracks){
 			<span class="track_info">
 				<a class="image" href="/${e.path.join("/")}" target="_blank"
 					style="background-image:url(/${e.path.join("/")}/${e.image}?size=small)">
-					<span>Open</span>
+					<span>${LANG.open}</span>
 				</a>
 				<span class="track_name_and_date">
 					<a href="/${e.path.join("/")}" class="name" target="_blank">${e.track}</a>
