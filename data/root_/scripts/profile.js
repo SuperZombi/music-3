@@ -141,6 +141,7 @@ async function submain() {
 	loadProfileImage();
 	loadSettings();
 	settingsController();
+	initTabs();
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", '../api/get_tracks', false)
@@ -586,9 +587,9 @@ function loadSettings() {
 				else if (i == "phone"){
 					phoneMask.unmaskedValue = data[i];
 				}
-				// else if (i == "role" && data[i] == "admin"){
-				// 	document.getElementById("console-icon").style.display = "flex"
-				// }
+				else if (i == "role" && data[i] == "admin"){
+					document.getElementById("console-icon").style.display = ""
+				}
 				else{
 					try{
 						let input = document.querySelector(`.settings_element input[name=${i}]`)
@@ -775,4 +776,23 @@ function collapse(){
 	else{
 		document.getElementById('collapse_but').style.transform = ""
 	}
+}
+
+function changeTab(target){
+	let currentTab = document.querySelector("#menu > .menu-element.active");
+	let targetTab = document.querySelector(`#menu > .menu-element[data=${target}]`);
+	if (currentTab != targetTab){
+		window.location.hash = target;
+		currentTab.classList.remove("active")
+		targetTab.classList.add("active")
+	}
+}
+
+function initTabs(){
+	let tabs = document.querySelectorAll("#menu > .menu-element[data]");
+	tabs.forEach(tab=>{
+		tab.onclick = e => {
+			changeTab(tab.getAttribute("data"))
+		}
+	})
 }
