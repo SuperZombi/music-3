@@ -6,17 +6,27 @@ body = `
 
 
 <div id="menu">
-	<div class="menu-element active">
+	<div class="menu-element active" data="dashboard">
 		<span class="menu-icon">🏠</span>
-		<span class="menu-text">Аккаунт</span>
+		<span class="menu-text">Главная</span>
 	</div>
 
-	<div class="menu-element">
+	<div class="menu-element" data="tracks">
 		<span class="menu-icon">🎵</span>
 		<span class="menu-text">Мои треки</span>
 	</div>
 
-	<div class="menu-element">
+	<div class="menu-element" data="statistics">
+		<span class="menu-icon">📈</span>
+		<span class="menu-text">Статистика</span>
+	</div>
+
+	<a class="menu-element" href="/admin" target="_blank" id="console-icon" style="display:none">
+		<span class="menu-icon"><img src="../root_/images/terminal.svg"></span>
+		<span class="menu-text">Admin Console</span>
+	</a>
+
+	<div class="menu-element" data="settings">
 		<span class="menu-icon">⚙</span>
 		<span class="menu-text">Настройки</span>
 	</div>
@@ -28,10 +38,6 @@ body = `
 </div>
 
 <div id="page-content">
-
-	<a id="console-icon" href="/admin" title="Admin Console" style="display:none;">
-		<img src="../root_/images/terminal.svg">
-	</a>
 
 	<h1 id="dont-redirected" style="text-align:center;font-family:sans-serif;display:none;">
 		<a href="login" style="color:blue">${LANG.login_radio}/${LANG.signup_radio}</a>
