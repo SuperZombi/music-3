@@ -149,6 +149,7 @@ html{
 	overflow-y: auto;
 	transition: 0.5s;
 	position: relative;
+	scroll-behavior: smooth;
 }
 
 .tab-content{
@@ -289,12 +290,8 @@ html{
 }
 #settings_area{
 	overflow-y: auto;
-	max-height: calc(100vh - 170px);
-}
-#settings_area:after{
-	content: '';
-	display: block;
-	height: 60px;
+	max-height: calc(100vh - 130px);
+	scroll-behavior: smooth;
 }
 #save_button{
 	position: absolute;
@@ -406,8 +403,8 @@ html{
 	display: inline-block;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 15px;
-	margin-bottom: 15px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	border: 5em;
 	cursor: pointer;
 	outline: none;
