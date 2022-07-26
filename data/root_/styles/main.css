@@ -1093,6 +1093,7 @@ div.ripple {
 	right: 5px;
 	transition: bottom 0.75s ease-in-out;
 	cursor: pointer;
+	z-index: 10;
 }
 #toTop img{
 	height: 100%;
