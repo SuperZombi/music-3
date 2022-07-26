@@ -220,6 +220,15 @@ body = `
 
 	<div class="tab-content" data="tracks">
 
+		<div style="text-align:center">
+			<span>${LANG.sort_method}:</span>
+			<span class="radio">
+				<input label="${LANG.by_date}" type="radio" name="my_tracks_sort_method" checked value="date" onchange="changeSortMethod('my_tracks')">
+				<input label="${LANG.by_popularity}" type="radio" name="my_tracks_sort_method" value="popular" onchange="changeSortMethod('my_tracks')">
+			</span>
+		</div>
+		<hr>
+
 		<div id="card_previewer">
 			<span title="${LANG.edit}"><img onclick="edit()" src="../root_/images/edit.svg" draggable="false"/></span>
 			<span title="${LANG.share}"><img onclick="share()" src="../root_/images/share.svg" draggable="false"/></span>
@@ -241,6 +250,16 @@ body = `
 	</div>
 
 	<div class="tab-content" data="statistics">
+
+		<div style="text-align:center">
+			<span>${LANG.sort_method}:</span>
+			<span class="radio">
+				<input label="${LANG.by_date}" type="radio" name="stat_sort_method" value="date" onchange="changeSortMethod('statistics')">
+				<input label="${LANG.by_popularity}" type="radio" name="stat_sort_method" value="popular" checked onchange="changeSortMethod('statistics')">
+			</span>
+		</div>
+		<hr>
+
 		<div id="statistics_area">
 			<div class='track' style="font-weight: bold; padding-top: 12px; padding-bottom: 12px;">
 				<span class="track_info" style="justify-content:center;">${LANG.content}</span>
