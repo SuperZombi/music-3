@@ -1,3 +1,20 @@
+var tabController = new tabSwitherController();
+function tabSwitherController(){
+	this.alreadyWasOpened = [];
+	this.eventHandler = {};
+	this.onFirstTimeOpen = function(tab, func){
+		this.eventHandler[tab] = func
+	}
+	this.openedTab = function(tab){
+		if (!this.alreadyWasOpened.includes(tab)){
+			this.alreadyWasOpened.push(tab)
+			if (tab in this.eventHandler){
+				this.eventHandler[tab]()
+			}
+		}
+	}
+}
+
 (function load_page(){
 	if (typeof header !== 'undefined' && typeof body !== 'undefined'){
 		document.title = `${LANG.profile_title} - Zombi Music`
@@ -46,6 +63,14 @@ function empty(){
 			${LANG.nothing_here} <br>
 			¯\\_(ツ)_/¯
 		</h2>`
+}
+function loader(){
+	return `
+	<svg xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;" width="80px" height="80px" viewBox="0 0 100 100">
+		<circle cx="50" cy="50" fill="none" stroke="#007EFF" stroke-width="10" r="35" stroke-dasharray="165 57">
+			<animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+		</circle>
+	</svg>`
 }
 
 function logout(){
@@ -179,27 +204,33 @@ function getProfileInfo(){
 
 
 async function get_tracks(sort_method='default'){
-	let sort = sort_method == 'default' ? local_storage["sort_method"] : sort_method;
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", '/api/get_tracks', false)
-	xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-	xhr.send(JSON.stringify({'user': local_storage.userName, "sort_method": sort}))
-	if (xhr.status != 200){ notice.Error(LANG.error) }
-	else{
-		let answer = JSON.parse(xhr.response);
-		if (answer.successfully){
-			return answer.tracks;
+	return new Promise((resolve, reject) => {
+		let sort = sort_method == 'default' ? local_storage["sort_method"] : sort_method;
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", '/api/get_tracks')
+		xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+		xhr.onload = ()=>{
+			if (xhr.status != 200){ notice.Error(LANG.error) }
+			else{
+				let answer = JSON.parse(xhr.response);
+				if (answer.successfully){
+					resolve(answer.tracks);
+				}
+			}
+			resolve([]);
 		}
-	}
+		xhr.send(JSON.stringify({'user': local_storage.userName, "sort_method": sort}))
+	})
 }
 
 var tracksLoaded = false;
 async function loadTracks(){
+	document.getElementById("main_page").innerHTML = loader();
 	let sort_method = document.querySelector("input[name=my_tracks_sort_method]:checked").value
 	let tracks = await get_tracks(sort_method);
 	if (tracks){
 		if (tracks.length == 0){
-			document.getElementById("empty").innerHTML = empty();
+			document.getElementById("main_page").innerHTML = empty();
 		}
 		else{
 			await addNewCategory(tracks)
@@ -818,8 +849,13 @@ function changeSortMethod(what){
 }
 async function loadStatistics(){
 	let sort_method = document.querySelector("input[name=stat_sort_method]:checked").value
+	document.getElementById("statistics_area").innerHTML = loader();
 	let tracks = await get_tracks(sort_method);
 	if (tracks){
+		if (tracks.length == 0){
+			document.getElementById("statistics_area").innerHTML = empty();
+			return
+		}
 		let div = document.getElementById("statistics_area");
 		div.innerHTML = ""
 		tracks.forEach(function(e){
@@ -871,22 +907,6 @@ function collapse(){
 	}
 }
 
-var tabController = new tabSwitherController();
-function tabSwitherController(){
-	this.alreadyWasOpened = [];
-	this.eventHandler = {};
-	this.onFirstTimeOpen = function(tab, func){
-		this.eventHandler[tab] = func
-	}
-	this.openedTab = function(tab){
-		if (!this.alreadyWasOpened.includes(tab)){
-			this.alreadyWasOpened.push(tab)
-			if (tab in this.eventHandler){
-				this.eventHandler[tab]()
-			}
-		}
-	}
-}
 function changeTab(target){
 	let currentTab = document.querySelector("#menu > .menu-element.active");
 	let targetTab = document.querySelector(`#menu > .menu-element[data=${target}]`);
