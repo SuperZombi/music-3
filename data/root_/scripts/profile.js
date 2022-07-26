@@ -6,6 +6,11 @@ function tabSwitherController(){
 		this.eventHandler[tab] = func
 	}
 	this.openedTab = function(tab){
+		let element = (tab == "settings") ? "settings_area" : "page-content"
+		main_content = document.getElementById(element)
+		main_content.onscroll = function(){showScrollTop()}
+		showScrollTop()
+
 		if (!this.alreadyWasOpened.includes(tab)){
 			this.alreadyWasOpened.push(tab)
 			if (tab in this.eventHandler){
@@ -36,7 +41,6 @@ function tabSwitherController(){
 
 window.onresize = function(){ overflowed() }
 window.orientationchange = function(){ overflowed() }
-window.onscroll = function(){showScrollTop()}
 
 function darking_images(){
 	if (document.getElementById('artist_image').src.split('.').pop() == "svg"){
@@ -91,6 +95,11 @@ function goToLogin(){
 	window.location.href = decodeURIComponent(login.href)
 }
 
+function scrollToTop(){
+	main_content.scrollTo(0,0);
+}
+
+var main_content;
 function main(){
 	local_storage = { ...localStorage };
 	if (local_storage.userName && local_storage.userPassword){
@@ -103,6 +112,9 @@ function main(){
 		document.querySelector("#notifications").classList.add("notifications_top")
 		document.querySelector(".logout > #logout-icon").style.display = "block"
 		document.querySelector(".logout > #logout-icon").onclick = logout
+
+		main_content = document.getElementById("page-content")
+		main_content.onscroll = function(){showScrollTop()}
 
 		submain()
 	}
@@ -205,7 +217,11 @@ function getProfileInfo(){
 
 async function get_tracks(sort_method='default'){
 	return new Promise((resolve, reject) => {
+		let data = { 'user': local_storage.userName }
 		let sort = sort_method == 'default' ? local_storage["sort_method"] : sort_method;
+		if (sort != undefined){
+			data = {...data, "sort_method": sort};
+		}
 		let xhr = new XMLHttpRequest();
 		xhr.open("POST", '/api/get_tracks')
 		xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -219,7 +235,7 @@ async function get_tracks(sort_method='default'){
 			}
 			resolve([]);
 		}
-		xhr.send(JSON.stringify({'user': local_storage.userName, "sort_method": sort}))
+		xhr.send(JSON.stringify(data))
 	})
 }
 
@@ -240,8 +256,8 @@ async function loadTracks(){
 }
 
 function showScrollTop(){
-	if (window.scrollY > 200){
-		document.getElementById("toTop").style.bottom = "10px"
+	if (main_content.scrollTop > 200){
+		document.getElementById("toTop").style.bottom = "5px"
 	}
 	else{
 		document.getElementById("toTop").style.bottom = "-50%"
