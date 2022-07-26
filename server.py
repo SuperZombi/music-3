@@ -148,7 +148,7 @@ def my_rating(likes, views):
 def sort_tracks(tracks, by):
 	if by == "date":
 		tracks = sorted(tracks, key=lambda x: dataparse.parse(x["date"], dayfirst=True) , reverse=True)
-	if by == "popular":
+	elif by == "popular":
 		tracks = sorted(tracks, key=lambda x: my_rating(x["statistics"]["likes"], x["statistics"]["views"]) , reverse=True)
 	return tracks
 
@@ -675,6 +675,18 @@ def change_profile_photo():
 			return jsonify({'successfully': False, 'reason': Errors.incorrect_name_or_password.name})
 
 
+@app.route('/api/get_profile_info', methods=['POST'])
+def get_profile_info():
+	user = users.get(request.json['user'])
+	if user:
+		is_admin = False
+		if 'role' in user.keys() and user['role'] == 'admin':
+			is_admin = True
+
+		path = "/" + request.json['user'].lower().replace(" ", "-")
+		return jsonify({'successfully': True, 'is_admin': is_admin, 'path': path})
+	else:
+		return jsonify({'successfully': False, 'reason': Errors.user_dont_exist.name})
 
 @app.route('/api/get_user_profile', methods=['POST'])
 def get_user_profile():
