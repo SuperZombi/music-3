@@ -38,6 +38,10 @@ body = `
 
 <div id="page-content">
 
+	<div id="toTop" title="${LANG.up}">
+		<img onclick="scrollToTop()" src="../root_/images/return-to-the-top.svg">
+	</div>
+
 	<div class="tab-content active" data="dashboard">
 
 		<h1 id="dont-redirected" style="text-align:center;font-family:sans-serif;display:none;">
@@ -72,12 +76,11 @@ body = `
 
 	<div class="tab-content" data="settings">
 
-		<span id="settings">
-			<h1>⚙️${LANG.settings}</h1>
-		</span>
-		<hr style="margin-top: 0;">
-
 		<div id="settings_area">
+			<span id="settings">
+				<h1>⚙️${LANG.settings}</h1>
+			</span>
+			<hr style="margin-top: 0;">
 
 			<details>
 				<summary>🎨${LANG.appearance}</summary>
@@ -267,11 +270,6 @@ body = `
 				</span>
 			</div>
 		</div>
-	</div>
-
-
-	<div id="toTop" title="${LANG.up}">
-		<img onclick="window.scrollTo(0,0)" src="../root_/images/return-to-the-top.svg">
 	</div>
 
 </div>
