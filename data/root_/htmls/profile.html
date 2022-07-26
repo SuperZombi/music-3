@@ -220,7 +220,7 @@ body = `
 
 	<div class="tab-content" data="tracks">
 
-		<div style="text-align:center">
+		<div style="text-align:center;margin-top:6px;">
 			<span>${LANG.sort_method}:</span>
 			<span class="radio">
 				<input label="${LANG.by_date}" type="radio" name="my_tracks_sort_method" checked value="date" onchange="changeSortMethod('my_tracks')">
@@ -241,9 +241,7 @@ body = `
 			<div id="card_previewer_name_txt"></div>
 		</div>
 
-		<div id="main_page">
-			<div id="empty"></div>
-		</div>
+		<div id="main_page"></div>
 
 		<div id="extra_space"></div>
 
@@ -251,7 +249,7 @@ body = `
 
 	<div class="tab-content" data="statistics">
 
-		<div style="text-align:center">
+		<div style="text-align:center;margin-top:6px;">
 			<span>${LANG.sort_method}:</span>
 			<span class="radio">
 				<input label="${LANG.by_date}" type="radio" name="stat_sort_method" value="date" onchange="changeSortMethod('statistics')">
