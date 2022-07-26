@@ -138,42 +138,73 @@ function loadProfileImage(){
 }
 
 async function submain() {
+	getProfileInfo();
 	loadProfileImage();
-	loadSettings();
-
+	
+	tabController.onFirstTimeOpen("settings", _=>{
+		loadSettings();
+	})
 	tabController.onFirstTimeOpen("statistics", _=>{
-		loadTracks();
+		if (local_storage["sort_method"]){
+			document.querySelector(`input[name=stat_sort_method][value=${local_storage["sort_method"]}]`).checked = true;
+		}
+		loadStatistics();
 	})
 	tabController.onFirstTimeOpen("tracks", _=>{
+		if (local_storage["sort_method"]){
+			document.querySelector(`input[name=my_tracks_sort_method][value=${local_storage["sort_method"]}]`).checked = true;
+		}
 		loadTracks();
 	})
 
 	initTabs();
 }
 
+function getProfileInfo(){
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", '/api/get_profile_info', false)
+	xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+	xhr.send(JSON.stringify({'user': local_storage.userName}))
+	if (xhr.status != 200){ notice.Error(LANG.error) }
+	else{
+		let answer = JSON.parse(xhr.response);
+		if (answer.successfully){
+			document.getElementById("user-name").getElementsByTagName('a')[0].href = answer.path
+			if (answer["is_admin"]){
+				document.getElementById("console-icon").style.display = ""
+			}
+		}
+	}
+}
+
+
+async function get_tracks(sort_method='default'){
+	let sort = sort_method == 'default' ? local_storage["sort_method"] : sort_method;
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", '/api/get_tracks', false)
+	xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+	xhr.send(JSON.stringify({'user': local_storage.userName, "sort_method": sort}))
+	if (xhr.status != 200){ notice.Error(LANG.error) }
+	else{
+		let answer = JSON.parse(xhr.response);
+		if (answer.successfully){
+			return answer.tracks;
+		}
+	}
+}
+
 var tracksLoaded = false;
 async function loadTracks(){
-	if (!tracksLoaded){
-		let xhr = new XMLHttpRequest();
-		xhr.open("POST", '../api/get_tracks', false)
-		xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-		xhr.send(JSON.stringify({'user': local_storage.userName}))
-		if (xhr.status != 200){ notice.Error(LANG.error) }
+	let sort_method = document.querySelector("input[name=my_tracks_sort_method]:checked").value
+	let tracks = await get_tracks(sort_method);
+	if (tracks){
+		if (tracks.length == 0){
+			document.getElementById("empty").innerHTML = empty();
+		}
 		else{
-			let answer = JSON.parse(xhr.response);
-			if (answer.successfully){
-				document.getElementById("user-name").getElementsByTagName('a')[0].href = "/" + answer.path
-				if (answer.tracks.length == 0){
-					document.getElementById("empty").innerHTML = empty();
-				}
-				else{
-					tracksLoaded = true;
-					await addNewCategory(answer.tracks)
-					overflowed()
-					loadStatistics(answer.tracks)
-				}
-			}
-		}		
+			await addNewCategory(tracks)
+			overflowed()
+		}
 	}
 }
 
@@ -226,6 +257,7 @@ async function addNewCategory(tracks){
 			subdiv.appendChild(a)
 		})
 		div.appendChild(subdiv)
+		document.getElementById("main_page").innerHTML = ""
 		document.getElementById("main_page").appendChild(div)
 		resolve()
 	});
@@ -564,9 +596,6 @@ function loadSettings() {
 				else if (i == "phone"){
 					phoneMask.unmaskedValue = data[i];
 				}
-				else if (i == "role" && data[i] == "admin"){
-					document.getElementById("console-icon").style.display = ""
-				}
 				else{
 					try{
 						let input = document.querySelector(`.settings_element input[name=${i}]`)
@@ -732,20 +761,20 @@ function reset_password(){
 	window.location.href = decodeURIComponent(login.href)
 }
 
-function sortByDate(what){
-	what.forEach(function(e){
-		var tmp = e.date.split(".")
-		var x = new Date(tmp[2], tmp[1]-1, tmp[0])
-		e.date = x
-	})
-	return what.sort((a, b) => b.date - a.date)
-}
-function sortByStat(what){
-	what.forEach(function(e){
-		e.popular = e.statistics.likes + e.statistics.views;
-	})
-	return what.sort((a, b) => b.popular - a.popular)
-}
+// function sortByDate(what){
+// 	what.forEach(function(e){
+// 		var tmp = e.date.split(".")
+// 		var x = new Date(tmp[2], tmp[1]-1, tmp[0])
+// 		e.date = x
+// 	})
+// 	return what.sort((a, b) => b.date - a.date)
+// }
+// function sortByStat(what){
+// 	what.forEach(function(e){
+// 		e.popular = e.statistics.likes + e.statistics.views;
+// 	})
+// 	return what.sort((a, b) => b.popular - a.popular)
+// }
 
 
 function format_spaces(num){
@@ -778,29 +807,43 @@ function format_number(num){
 	}
 	return new_string;
 }
-function loadStatistics(tracks){
-	let div = document.getElementById("statistics_area");
-	sortByStat(tracks).forEach(function(e){
-		let track = document.createElement("div")
-		track.className = "track"
-		track.innerHTML += `
-			<span class="track_info">
-				<a class="image" href="/${e.path.join("/")}" target="_blank"
-					style="background-image:url(/${e.path.join("/")}/${e.image}?size=small)">
-					<span>${LANG.open}</span>
-				</a>
-				<span class="track_name_and_date">
-					<a href="/${e.path.join("/")}" class="name" target="_blank">${e.track}</a>
-					<span class="date">${e.date}</span>
+
+function changeSortMethod(what){
+	if (what == "statistics"){
+		loadStatistics()
+	}
+	else if (what == "my_tracks"){
+		loadTracks()
+	}
+}
+async function loadStatistics(){
+	let sort_method = document.querySelector("input[name=stat_sort_method]:checked").value
+	let tracks = await get_tracks(sort_method);
+	if (tracks){
+		let div = document.getElementById("statistics_area");
+		div.innerHTML = ""
+		tracks.forEach(function(e){
+			let track = document.createElement("div")
+			track.className = "track"
+			track.innerHTML += `
+				<span class="track_info">
+					<a class="image" href="/${e.path.join("/")}" target="_blank"
+						style="background-image:url(/${e.path.join("/")}/${e.image}?size=small)">
+						<span>${LANG.open}</span>
+					</a>
+					<span class="track_name_and_date">
+						<a href="/${e.path.join("/")}" class="name" target="_blank">${e.track}</a>
+						<span class="date">${e.date}</span>
+					</span>
 				</span>
-			</span>
-			<span class="likes_and_views">
-				<span title="${format_spaces(e.statistics.views)}">${format_number(e.statistics.views)}</span>
-				<span title="${format_spaces(e.statistics.likes)}">${format_number(e.statistics.likes)}</span>
-			</span>
-		`
-		div.appendChild(track)
-	})
+				<span class="likes_and_views">
+					<span title="${format_spaces(e.statistics.views)}">${format_number(e.statistics.views)}</span>
+					<span title="${format_spaces(e.statistics.likes)}">${format_number(e.statistics.likes)}</span>
+				</span>
+			`
+			div.appendChild(track)
+		})	
+	}
 }
 
 function open_menu(){
